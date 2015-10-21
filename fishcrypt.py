@@ -1300,9 +1300,12 @@ class XChatCrypt:
         ## else the current channel/nick is taken as target and the key is para 1
         else:
             newkey = word[1]
-        if len(newkey) < 8 or len(newkey) > 56:
-            print "Key must be between 8 and 56 chars"
+        if len(newkey) < 8:
+            print "Key must be between 8 and 56 chars (longer keys are possible but cut)"
             return xchat.EAT_ALL
+        if len(newkey) > 56:
+            print "Key with > 56 chars will be cut to 56"
+            newkey = newkey[:56]
         ## get the Keyobject if available or get a new one
         key = self.find_key(id,create=SecretKey(None,protectmode=self.config['DEFAULTPROTECT'],cbcmode=self.config['DEFAULTCBC']))
         ## set the key 
